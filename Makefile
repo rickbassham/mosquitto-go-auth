@@ -43,3 +43,16 @@ clean:
 	rm -f go-auth.h
 	rm -f go-auth.so
 	rm -f pw
+
+# Docker targets
+DOCKER_REPO := ghcr.io/rickbassham/mosquitto-go-auth
+DOCKER_TAG := amd64-latest
+
+docker-build:
+	docker build --platform linux/amd64 -t $(DOCKER_REPO):$(DOCKER_TAG) -f Dockerfile.debian .
+
+docker-push:
+	docker push $(DOCKER_REPO):$(DOCKER_TAG)
+
+docker-release: docker-build docker-push
+	@echo "Docker image $(DOCKER_REPO):$(DOCKER_TAG) built and pushed successfully"
